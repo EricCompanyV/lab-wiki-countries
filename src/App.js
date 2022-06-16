@@ -12,12 +12,21 @@ function App() {
   const [fetching, setFetching] = useState(true);
   const [countries, setCountries] = useState([])
 
-  useEffect(()=> {
-    axios.get(apiURL).then((response) => {
+  // useEffect(()=> {
+  //   axios.get(apiURL).then((response) => {
+  //     setCountries(response.data)
+  //     setFetching(false)
+  //   })
+  // },[])
+
+  useEffect(() => {
+    const fetchData = async()=>{
+      const response = await axios.get(apiURL)
       setCountries(response.data)
       setFetching(false)
-    })
-  },[])
+    }
+    fetchData()
+  }, [countries]);
 
   return (
     <div className="App">

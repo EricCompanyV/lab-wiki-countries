@@ -9,38 +9,48 @@ function CountryDetails({ countries }) {
   const params = useParams();
   const [countryData, setCountryData] = useState([]);
 
+  //   useEffect(() => {
+  //     axios.get(`https://ih-countries-api.herokuapp.com/countries/${params.id}`)
+  //       .then((response) => {
+  //         setCountryData(response.data);
+  //         setFetching(false)
+  //         console.log(response)
+  //       });
+  //   }, [params.id]);
   useEffect(() => {
-    axios
-      .get(`https://ih-countries-api.herokuapp.com/countries/${params.id}`)
-      .then((response) => {
-        setCountryData(response.data);
-        setFetching(false)
-        console.log(response)
-      });
+    const fetchData = async () => {
+      const response = await axios.get(
+        `https://ih-countries-api.herokuapp.com/countries/${params.id}`
+      );
+      setCountryData(response.data);
+      setFetching(false);
+    };
+    fetchData()
   }, [params.id]);
-  
+
   return (
-    !fetching && 
-    <>
-      <Card
-        title={countryData.name.official}
-        extra={<a href="/">Home</a>}
-        style={{
-          width: 300,
-        }}
-      >
-        <p>Capital: {countryData.capital}</p>
-        <p>Area: {countryData.area} km²</p>
-        <ul>
-          Borders:
-          <CountriesList
-            countries={countries.filter((country) => {
-              return countryData.borders.includes(country.alpha3Code);
-            })}
-          />
-        </ul>
-      </Card>
-    </>
+    !fetching && (
+      <>
+        <Card
+          title={countryData.name.official}
+          extra={<a href="/">Home</a>}
+          style={{
+            width: 300,
+          }}
+        >
+          <p>Capital: {countryData.capital}</p>
+          <p>Area: {countryData.area} km²</p>
+          <ul>
+            Borders:
+            <CountriesList
+              countries={countries.filter((country) => {
+                return countryData.borders.includes(country.alpha3Code);
+              })}
+            />
+          </ul>
+        </Card>
+      </>
+    )
   );
 }
 
